@@ -6,6 +6,7 @@ help:
 	@echo "   dry-run          to run using sample dataset without saving any files"
 	@echo "   check            to type check"
 	@echo "   setup            to setup to run"
+	@echo "   args             to see argments"
 
 # run using sample dataset with saving any logfiles
 run:
@@ -22,3 +23,7 @@ check:
 # setup to run
 setup:
 	poetry install
+
+# see argments
+args:
+	poetry run python src/main.py --help
