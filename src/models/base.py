@@ -1,3 +1,6 @@
+# Copyright (c) latataro (jchanxtarov). All rights reserved.
+# Licensed under the MIT License.
+
 from abc import ABCMeta, abstractmethod
 from typing import Any, Generic, TypeVar
 

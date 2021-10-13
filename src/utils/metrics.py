@@ -1,3 +1,6 @@
+# Copyright (c) latataro (jchanxtarov). All rights reserved.
+# Licensed under the MIT License.
+
 import numpy as np
 import torch as th
 

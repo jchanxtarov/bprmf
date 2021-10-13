@@ -1,3 +1,6 @@
+# Copyright (c) latataro (jchanxtarov). All rights reserved.
+# Licensed under the MIT License.
+
 import pickle
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass

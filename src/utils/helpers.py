@@ -1,3 +1,6 @@
+# Copyright (c) latataro (jchanxtarov). All rights reserved.
+# Licensed under the MIT License.
+
 import logging
 import os
 from logging import DEBUG, NOTSET, FileHandler, Formatter

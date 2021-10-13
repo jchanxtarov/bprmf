@@ -1,3 +1,6 @@
+# Copyright (c) latataro (jchanxtarov). All rights reserved.
+# Licensed under the MIT License.
+
 from typing import List
 
 import torch as th
