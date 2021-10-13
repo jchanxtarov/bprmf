@@ -5,11 +5,11 @@ import numpy as np
 import torch as th
 
 
-def compute_metrics(matrix_scores, dict_train_pos, dict_test_pos, users, items, list_k, is_predict=False):
+def compute_metrics(matrix_scores, dict_train_cf, dict_test_cf, users, items, list_k, is_predict=False):
     matrix_test_pos = np.zeros([len(users), len(items)], dtype=np.float32)
-    for i, userid in enumerate(users):
-        train_pos_items = dict_train_pos[userid]
-        test_pos_items = dict_test_pos[userid]
+    for i, user in enumerate(users):
+        train_pos_items = dict_train_cf[user]
+        test_pos_items = dict_test_cf[user]
         # already bought in train data
         matrix_scores[i][train_pos_items] = 0.0
         matrix_test_pos[i][test_pos_items] = 1.0  # ground truth in test data
