@@ -41,10 +41,10 @@ if __name__ == '__main__':
 
         model = BprmfPredictor(
             epochs=args.epochs,
-            dim_entity_embed=args.dim_entity_embed,
+            dim_embed_global=args.dim_embed_global,
             batch_size=args.batch_size,
-            list_reg_learning_rates=args.list_reg_learning_rates,
-            learning_rate=args.learning_rate,
+            rate_reg=args.rate_reg,
+            rate_learning=args.rate_learning,
             top_ks=args.top_ks,
             interval_evaluate=args.interval_evaluate,
             stopping_steps=args.stopping_steps,

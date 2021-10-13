@@ -21,11 +21,11 @@ class BprmfPredictor(BasePredictor):
     # parameters
     model: BPRMF
     epochs: int
-    dim_entity_embed: int
+    dim_embed_global: int
     batch_size: int
     n_loop_cf: int
-    list_reg_learning_rates: List[float]  # for [lamda_l2, (unused)]
-    learning_rate: float
+    rate_reg: float  # for [lamda_l2, (unused)]
+    rate_learning: float
     top_ks: List[int]
     interval_evaluate: int
     stopping_steps: int
@@ -40,20 +40,20 @@ class BprmfPredictor(BasePredictor):
     def __init__(
         self,
         epochs=500,
-        dim_entity_embed=64,
+        dim_embed_global=64,
         batch_size=1024,
-        list_reg_learning_rates=[1e-5],
-        learning_rate=1e-4,
+        rate_reg=1e-5,
+        rate_learning=1e-4,
         top_ks=[20, 60, 100],
         interval_evaluate=10,
         stopping_steps=300,
     ) -> None:
         super().__init__()
         self.epochs = epochs
-        self.dim_entity_embed = dim_entity_embed
+        self.dim_embed_global = dim_embed_global
         self.batch_size = batch_size
-        self.list_reg_learning_rates = list_reg_learning_rates
-        self.learning_rate = learning_rate
+        self.rate_reg = rate_reg
+        self.rate_learning = rate_learning
         self.top_ks = top_ks
         self.interval_evaluate = interval_evaluate
         self.stopping_steps = stopping_steps
@@ -62,8 +62,8 @@ class BprmfPredictor(BasePredictor):
     def load(self, dataset: BprmfDataset) -> None:
         self.model = BPRMF(
             dataset=dataset,
-            dim_entity_embed=self.dim_entity_embed,
-            list_reg_learning_rates=self.list_reg_learning_rates,
+            dim_embed_global=self.dim_embed_global,
+            rate_reg=self.rate_reg,
         )
         self.dataset = dataset
         self.n_loop_cf = dataset.n_train // self.batch_size + 1
@@ -77,10 +77,10 @@ class BprmfPredictor(BasePredictor):
 
         # same as tensorflow: https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/Adam
         optimizer = optim.Adam(self.model.parameters(),
-                               lr=self.learning_rate, eps=1e-7)
+                               lr=self.rate_learning, eps=1e-7)
 
         # ids
-        userids_batch_test = [th.LongTensor(self.dataset.uniq_userids[i:i + 10000]).to(
+        userids_batch_test = [th.LongTensor(self.dataset.uniq_users[i:i + 10000]).to(
             device) for i in range(0, self.dataset.n_users, 10000)]
         itemids = th.arange(self.dataset.n_items, dtype=th.long).to(device)
 
@@ -98,7 +98,7 @@ class BprmfPredictor(BasePredictor):
 
             for _ in range(self.n_loop_cf):
                 users, pos_items, neg_items = generate_batch_cf(
-                    self.dataset.dict_train_pos, self.batch_size, 0, self.dataset.n_items)
+                    self.dataset.dict_train_pos, self.batch_size, self.dataset.n_items)
                 cf_batch_user = th.LongTensor(users).to(device)
                 cf_batch_pos_item = th.LongTensor(pos_items).to(device)
                 cf_batch_neg_item = th.LongTensor(neg_items).to(device)
@@ -203,7 +203,7 @@ class BprmfPredictor(BasePredictor):
         self.model.to(device)
 
         # ids
-        userids_batch_test = [th.LongTensor(self.dataset.uniq_userids[i:i + 10000]).to(
+        userids_batch_test = [th.LongTensor(self.dataset.uniq_users[i:i + 10000]).to(
             device) for i in range(0, self.dataset.n_users, 10000)]
         itemids = th.arange(self.dataset.n_items, dtype=th.long).to(device)
 

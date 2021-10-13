@@ -35,13 +35,13 @@ class BaseDataset(metaclass=ABCMeta):
         self.n_users = max(self.uniq_users) + 1
         self.n_items = max(max(self.arr_train_pos[:, 1]), max(self.arr_test_pos[:, 1])) + 1
 
-    def _load_cf_txt(self, path_dataset: str) -> Tuple[np.ndarray, UserItems]:
+    def _load_cf_dict(self, path_dataset: str) -> Tuple[np.ndarray, UserItems]:
         with open(path_dataset, mode='rb') as f:
             dict_uid_iids = pickle.load(f)
         list_uid_iid = [[uid, iid] for (uid, iids) in dict_uid_iids.items() for iid in list(set(iids))]
         return np.array(list_uid_iid), dict_uid_iids
 
-    def _load_cf_dict(self, path_dataset: str) -> Tuple[np.ndarray, UserItems]:
+    def _load_cf_txt(self, path_dataset: str) -> Tuple[np.ndarray, UserItems]:
         dict_uid_iids = dict()
         list_uid_iid = list()
 

@@ -71,6 +71,12 @@ def parse_args():
         default=10,
         help='Set stopping_steps.'
     )
+    parser.add_argument(
+        '--dim_embed_global',
+        type=int,
+        default=32,
+        help='Set dim_embed_global.'
+    )
 
     # about experiment condition
     parser.add_argument(

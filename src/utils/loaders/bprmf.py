@@ -5,7 +5,7 @@ from .base import BaseDataset
 
 class BprmfDataset(BaseDataset):
     def __init__(self, dataset: str) -> None:
-        super().__init__(name_dataset=dataset)
+        super().__init__(dataset=dataset)
 
     def logging_statistics(self) -> None:
         logging.info("n_train: {}".format(self.n_train))
