@@ -153,8 +153,8 @@ class BprmfPredictor(BasePredictor):
 
         # NOTE: to use best_model for prediction
         self.model = self.best_model
-        logging.info('[Finish Training] Epoch {:04d} / {:04d} [{:.1f}s]'.format(
-            epoch, self.epochs, time() - time_start_train))
+        logging.info('[Finish Training] Best Epoch {:04d} [{:.1f}s]'.format(
+            self.best_epoch, time() - time_start_train))
 
     def _evaluate_batch(
         self, dict_train_cf: UserItems, dict_test_cf: UserItems, users_batch: List[th.Tensor], items: th.Tensor, list_k: List[int], is_predict: bool = False
